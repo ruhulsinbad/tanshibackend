@@ -1,4 +1,3 @@
-const Bill = require("../models/Bill");
 const Cake = require("../models/Cake");
 const Coffe = require("../models/Coffe");
 
@@ -7,6 +6,12 @@ const resolvers = {
     hello: () => "Hello Tanshi",
     cake: async () => await Cake.find(),
     coffe: async () => await Coffe.find(),
+  },
+
+  Bill: {
+    totalCost: async (parent, args, context, info) => {
+      return parent;
+    },
   },
 
   Mutation: {
@@ -21,8 +26,14 @@ const resolvers = {
     },
 
     createBill: async (parent, { input }) => {
-      const newBill = await Bill.create({ ...input });
-      return newBill;
+      const cost = await input.map((single) => {
+        return Number(single.price) * Number(single.quantity);
+      });
+
+      const totalcost = cost.reduce((prev, cur) => prev + cur);
+      console.log(totalcost);
+
+      return totalcost;
     },
   },
 };

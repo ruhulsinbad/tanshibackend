@@ -10,7 +10,7 @@ const typeDefs = gql`
   type Cake {
     id: ID!
     name: String!
-    price: String!
+    price: Float!
     tag: String!
   }
 
@@ -28,28 +28,19 @@ const typeDefs = gql`
   }
 
   type Bill {
-    id: ID!
-    product1: Float
-    product2: Float
-    product3: Float
-    product4: Float
-    product5: Float
-    product6: Float
+    totalCost: Float!
   }
 
   input BillInput {
-    product1: Float
-    product2: Float
-    product3: Float
-    product4: Float
-    product5: Float
-    product6: Float
+    name: String
+    price: String
+    quantity: String
   }
 
   type Mutation {
     createCake(cake: Product): Cake
     createCoffe(coffe: Product): Coffe
-    createBill(input: BillInput): Bill
+    createBill(input: [BillInput!]!): Bill
   }
 `;
 
