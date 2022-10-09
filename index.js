@@ -14,6 +14,8 @@ emitter.setMaxListeners(90);
 const typeDefs = require("./gql/typeDefs");
 const resolvers = require("./gql/resolvers");
 
+const port = 4000 || process.env.PORT;
+
 const dburl =
   "mongodb+srv://sinbad:1025Sinbad1561@cluster0.q94ur.mongodb.net/tanshiCafe?retryWrites=true&w=majority";
 
@@ -39,7 +41,7 @@ const createServer = async () => {
 
   apolloServer.applyMiddleware({ app, path: "/graphql" });
 
-  app.listen(4000, () => {
+  app.listen(port, () => {
     console.log("Server is running on 4000");
   });
 };
