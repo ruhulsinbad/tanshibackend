@@ -1,6 +1,9 @@
 const { EventEmitter } = require("events");
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
+const {
+  ApolloServerPluginLandingPageLocalDefault,
+} = require("apollo-server-core");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
@@ -21,15 +24,20 @@ mongoose
 
 const createServer = async () => {
   const app = express();
+  app.get("/", (req, res) => {
+    res.send("Hi there");
+  });
   app.use(cors());
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
     csrfPrevention: true,
+    cache: "bounded",
+    plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
   });
   await apolloServer.start();
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app, path: "/graphql" });
 
   app.listen(4000, () => {
     console.log("Server is running on 4000");
